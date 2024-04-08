@@ -4,13 +4,17 @@ FROM kalilinux/kali-rolling as base
 # Set work directory in the container
 WORKDIR /app
 
+RUN apt-get update --fix-missing \
+    && apt-get -y upgrade 
+
+RUN apt-get -y install nmap python3-pip python3.11 python-is-python3
+
 # Install system dependencies
-RUN apt-get update \
-    && apt-get install -y build-essential curl ffmpeg \
+RUN apt-get install -y build-essential curl ffmpeg \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt update \
-    && apt -y install kali-linux-large
+    && rm -rf /var/lib/apt/lists/*
+
+
 
 
 # Install Poetry - respects $POETRY_VERSION & $POETRY_HOME
@@ -39,4 +43,4 @@ COPY . /app
 EXPOSE 8000
 
 # Run the application when the container launches
-CMD ["poetry", "run", "python", "autogpt/__main__.py"]
+CMD ["poetry", "run", "python", "forge/__main__.py"]
