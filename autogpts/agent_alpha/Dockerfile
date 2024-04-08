@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:3.11-slim-buster as base
+FROM kalilinux/kali-rolling as base
 
 # Set work directory in the container
 WORKDIR /app
@@ -8,7 +8,9 @@ WORKDIR /app
 RUN apt-get update \
     && apt-get install -y build-essential curl ffmpeg \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && apt update \
+    && apt -y install kali-linux-large
 
 
 # Install Poetry - respects $POETRY_VERSION & $POETRY_HOME
